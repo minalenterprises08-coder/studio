@@ -1,3 +1,76 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "Elegant custom boxes with intricate designs.",
+      "imageUrl": "https://images.unsplash.com/photo-1759563874670-9ccc048192ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxsdXh1cnklMjBwYWNrYWdpbmd8ZW58MHx8fHwxNzYyMTc2NjQzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "luxury packaging"
+    },
+    {
+      "id": "cat-fancy-boxes",
+      "description": "A close-up of a beautifully crafted rigid box with a magnetic closure.",
+      "imageUrl": "https://images.unsplash.com/photo-1761315087416-1f32a4529930?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y3VzdG9tJTIwYm94fGVufDB8fHx8MTc2MjE0NzA1N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "custom box"
+    },
+    {
+      "id": "cat-labels",
+      "description": "Rolls of custom printed labels with foil accents.",
+      "imageUrl": "https://images.unsplash.com/photo-1669804803304-e476993ec594?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcm9kdWN0JTIwbGFiZWx8ZW58MHx8fHwxNzYyMTc1Nzk1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "product label"
+    },
+    {
+      "id": "cat-wedding-cards",
+      "description": "A flat lay of an elegant wedding invitation suite with inserts and a ribbon.",
+      "imageUrl": "https://images.unsplash.com/photo-1633008460512-624a321c15b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d2VkZGluZyUyMGludml0YXRpb258ZW58MHx8fHwxNzYyMTc2NjQzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wedding invitation"
+    },
+    {
+      "id": "cat-specialty-cards",
+      "description": "Stack of business cards with embossed logos and painted edges.",
+      "imageUrl": "https://images.unsplash.com/photo-1605098293544-25f4c32344c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMGNhcmRzfGVufDB8fHx8MTc2MjE3NjY0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "business cards"
+    },
+    {
+      "id": "portfolio-1",
+      "description": "Packaging for a high-end perfume brand.",
+      "imageUrl": "https://images.unsplash.com/photo-1760113559708-84e7a148ec68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwZXJmdW1lJTIwYm94fGVufDB8fHx8MTc2MjE3NjY0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "perfume box"
+    },
+    {
+      "id": "portfolio-2",
+      "description": "A sophisticated wedding invitation with gold foil lettering.",
+      "imageUrl": "https://images.unsplash.com/photo-1632610992723-82d7c212f6d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxpbnZpdGF0aW9uJTIwZGVzaWdufGVufDB8fHx8MTc2MjE3NjY0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "invitation design"
+    },
+    {
+      "id": "portfolio-3",
+      "description": "Custom printed mailer box for an e-commerce subscription service.",
+      "imageUrl": "https://images.unsplash.com/photo-1637416654886-cab42e20289e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtYWlsZXIlMjBib3h8ZW58MHx8fHwxNzYyMTc2NjQ0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mailer box"
+    },
+    {
+      "id": "portfolio-4",
+      "description": "Elegant labels for gourmet honey jars.",
+      "imageUrl": "https://images.unsplash.com/photo-1697384653769-e9baced40514?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxqYXIlMjBsYWJlbHxlbnwwfHx8fDE3NjIxNzY2NDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "jar label"
+    },
+    {
+      "id": "testimonial-1",
+      "description": "Portrait of Ayesha Khan",
+      "imageUrl": "https://images.unsplash.com/photo-1609505848912-b7c3b8b4beda?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTc2MjE1NDMxOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "testimonial-2",
+      "description": "Portrait of Bilal Ahmed",
+      "imageUrl": "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjIxMTM4MTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "testimonial-3",
+      "description": "Portrait of Sana Tariq",
+      "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b21hbiUyMHNtaWxpbmd8ZW58MHx8fHwxNzYyMDcxMzA2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman smiling"
+    }
+  ]
 }
