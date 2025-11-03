@@ -6,38 +6,16 @@ export function Logo(props: React.SVGProps<SVGSVGElement>) {
       fill="none"
       {...props}
     >
-      <g clipPath="url(#clip0_105_2)">
+      <g>
+        {/* Red A-shape */}
         <path
-          d="M0 0H100V100H0V0Z"
-          className="fill-primary/10 stroke-primary/20"
-        />
-        <path
-          d="M50 0L100 50L50 100L0 50L50 0Z"
-          className="fill-background"
-        />
-        <path
-          d="M50 15L85 50L50 85L15 50L50 15Z"
-          className="stroke-primary"
-          strokeWidth="4"
-        />
-        <path
-          d="M50 25L75 50L50 75L25 50L50 25Z"
-          className="fill-accent"
-        />
-        <path
-          d="M50 35L65 50L50 65L35 50L50 35Z"
-          className="fill-background"
-        />
-        <path
-          d="M50 42L58 50L50 58L42 50L50 42Z"
+          d="M40 85 L58 15 H72 L90 85 H75 L68 65 H52 L45 85 H40 Z M55 55 H65 L60 30 Z"
           className="fill-primary"
         />
+        {/* Blue bars */}
+        <path d="M10 85 L28 15 H38 L20 85 H10 Z" fill="#2E67B2" />
+        <path d="M25 85 L43 15 H53 L35 85 H25 Z" fill="#4B9CE2" />
       </g>
-      <defs>
-        <clipPath id="clip0_105_2">
-          <rect width="100" height="100" rx="8" fill="white" />
-        </clipPath>
-      </defs>
     </svg>
   );
 }
