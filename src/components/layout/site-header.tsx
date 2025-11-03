@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Logo } from '@/components/icons/logo';
 import { cn } from '@/lib/utils';
+import { useUser } from '@/firebase';
+import { UserAvatarButton } from '@/components/auth/user-avatar-button';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -21,6 +23,7 @@ const navLinks = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, isUserLoading } = useUser();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -91,8 +94,8 @@ export function SiteHeader() {
             <span className="font-bold">Minal Enterprises</span>
         </Link>
         
-        <div className="flex flex-1 items-center justify-end space-x-4">
-            <nav className="flex items-center space-x-2">
+        <div className="flex flex-1 items-center justify-end space-x-2">
+            <nav className="flex items-center space-x-1">
                 <Button variant="ghost" size="icon" asChild>
                     <Link href="tel:+923001234567">
                         <Phone className="h-5 w-5 text-foreground/60 hover:text-accent transition-colors" />
@@ -105,6 +108,17 @@ export function SiteHeader() {
                         <span className="sr-only">WhatsApp</span>
                     </Link>
                 </Button>
+
+                {isUserLoading ? (
+                  <div className="h-8 w-20 animate-pulse rounded-md bg-muted" />
+                ) : user ? (
+                  <UserAvatarButton user={user} />
+                ) : (
+                  <Button asChild size="sm" variant="ghost">
+                    <Link href="/login">Login</Link>
+                  </Button>
+                )}
+                
                 <Button asChild size="sm" className="hidden sm:flex transition-transform duration-300 hover:scale-105 hover:shadow-lg">
                     <Link href="/customizer">Request a Free Quote</Link>
                 </Button>
