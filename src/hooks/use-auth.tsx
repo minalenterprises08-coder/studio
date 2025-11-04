@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
   signOut as firebaseSignOut,
-  onAuthStateChanged,
   User,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -21,7 +20,21 @@ type AuthCredentials = {
   lastName?: string;
 };
 
-export const useAuth = () => {
+// Extend the return type of useAuth
+export interface UseAuthReturn {
+  user: User | null;
+  isUserLoading: boolean;
+  isAdmin: boolean;
+  setIsAdmin: Dispatch<SetStateAction<boolean>>; // Expose setIsAdmin
+  error: Error | null;
+  isPending: boolean;
+  signUpWithEmail: (credentials: AuthCredentials) => Promise<void>;
+  signInWithEmail: (credentials: AuthCredentials) => void;
+  signOut: () => void;
+}
+
+
+export const useAuth = (): UseAuthReturn => {
   const { auth, firestore, user, isUserLoading } = useFirebase();
   const router = useRouter();
   const { toast } = useToast();
@@ -129,6 +142,8 @@ export const useAuth = () => {
   
   // Protect routes by redirecting unauthenticated users
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const isAuthPage =
       window.location.pathname.startsWith('/login') ||
       window.location.pathname.startsWith('/signup');
@@ -145,6 +160,8 @@ export const useAuth = () => {
   }, [user, isUserLoading, router]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     // Redirect non-admins away from admin page
     if (!isUserLoading && user && !isAdmin && window.location.pathname.startsWith('/admin')) {
       toast({
@@ -160,6 +177,7 @@ export const useAuth = () => {
     user,
     isUserLoading,
     isAdmin,
+    setIsAdmin,
     error,
     isPending,
     signUpWithEmail,
