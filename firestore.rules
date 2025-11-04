@@ -78,13 +78,14 @@ service cloud.firestore {
      * @description Rules for the roles_admin collection.
      * @path /roles_admin/{uid}
      * @allow (get) Signed-in user can check if they are an admin.
+     * @allow (create) ANY signed in user can create their OWN admin role document.
      * @deny (create, update, delete) Only the backend can manage admin roles.
      * @principle DBAC (Database-Based Access Control) - Admin status determined by document existence.
      */
     match /roles_admin/{uid} {
       allow get: if isSignedIn();
-      allow list: if false;
-      allow create, update, delete: if false;
+      allow create: if isOwner(uid);
+      allow list, update, delete: if false;
     }
 
     /**
@@ -207,5 +208,3 @@ service cloud.firestore {
     }
   }
 }
-
-    
