@@ -5,6 +5,7 @@ import { Features } from '@/components/home/features';
 import { Testimonials } from '@/components/home/testimonials';
 import { Location } from '@/components/home/location';
 import { QuoteCta } from '@/components/home/quote-cta';
+import { BusinessPartners } from '@/components/home/business-partners';
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <ProductCategories />
       <Portfolio />
       <Features />
+      <BusinessPartners />
       <Testimonials />
       <Location />
       <QuoteCta />
