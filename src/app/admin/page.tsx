@@ -1,6 +1,8 @@
 'use client';
 import { useAuth } from '@/hooks/use-auth';
 import { useEffect, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 export default function AdminPage() {
   const { user, isUserLoading, isAdmin } = useAuth();
@@ -29,13 +31,49 @@ export default function AdminPage() {
 
   return (
     <div className="container py-12">
-      <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-      <p className="text-muted-foreground">
-        Welcome, {user?.displayName || 'Admin'}.
-      </p>
-      <div className="mt-8">
-        <p>Admin-specific content will go here.</p>
+      <div className='flex justify-between items-center mb-8'>
+        <div>
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <p className="text-muted-foreground">
+            Welcome, {user?.displayName || 'Admin'}.
+          </p>
+        </div>
       </div>
+      
+      <div className="grid gap-8">
+        <Card>
+          <CardHeader>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle>Manage Products</CardTitle>
+                <CardDescription>Add, edit, or delete products from your catalog.</CardDescription>
+              </div>
+              <Button>Add New Product</Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p className='text-muted-foreground'>Product management UI will be here.</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle>Manage Portfolio</CardTitle>
+                <CardDescription>Add, edit, or delete items from your portfolio showcase.</CardDescription>
+              </div>
+              <Button>Add New Item</Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p className='text-muted-foreground'>Portfolio management UI will be here.</p>
+          </CardContent>
+        </Card>
+      </div>
+
     </div>
   );
 }
+
+    
