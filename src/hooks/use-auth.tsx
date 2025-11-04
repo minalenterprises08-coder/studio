@@ -7,6 +7,8 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   signOut as firebaseSignOut,
+  onAuthStateChanged,
+  User,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useFirebase } from '@/firebase/provider';
@@ -45,29 +47,16 @@ export const useAuth = () => {
     }
   }, [user, firestore]);
 
-  const handleAuthAction = async (
-    authPromise: Promise<any>,
-    successMessage: string,
-    redirectPath: string
-  ) => {
-    setIsPending(true);
-    setError(null);
-    try {
-      await authPromise;
-      toast({ title: 'Success', description: successMessage });
-      router.push(redirectPath);
-    } catch (e: any) {
-      setError(e);
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: e.message || 'An unexpected error occurred.',
-      });
-    } finally {
-      setIsPending(false);
-    }
+  const handleAuthError = (e: any) => {
+    setError(e);
+    toast({
+      variant: 'destructive',
+      title: 'Error',
+      description: e.message || 'An unexpected error occurred.',
+    });
+    setIsPending(false);
   };
-
+  
   const signUpWithEmail = async ({
     email,
     password,
@@ -75,51 +64,67 @@ export const useAuth = () => {
     lastName,
   }: AuthCredentials) => {
     if (!firstName || !lastName) {
-      setError(new Error('First and last name are required for sign up.'));
+      const err = new Error('First and last name are required for sign up.');
+      setError(err);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: err.message,
+      });
       return;
     }
-    await handleAuthAction(
-      (async () => {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        const { user } = userCredential;
-        const displayName = `${firstName} ${lastName}`;
-        await updateProfile(user, { displayName });
+    
+    setIsPending(true);
+    setError(null);
 
-        // Create user profile in Firestore
-        const userDocRef = doc(firestore, 'users', user.uid);
-        await setDoc(userDocRef, {
-          id: user.uid,
-          firstName,
-          lastName,
-          email: user.email,
-          createdAt: new Date().toISOString(),
-        });
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const { user } = userCredential;
+      const displayName = `${firstName} ${lastName}`;
+      await updateProfile(user, { displayName });
 
-        return userCredential;
-      })(),
-      'Account created successfully!',
-      '/dashboard'
-    );
+      // Create user profile in Firestore
+      const userDocRef = doc(firestore, 'users', user.uid);
+      await setDoc(userDocRef, {
+        id: user.uid,
+        firstName,
+        lastName,
+        email: user.email,
+        createdAt: new Date().toISOString(),
+      });
+
+      // The onAuthStateChanged listener will handle the redirect
+      toast({ title: 'Success', description: 'Account created successfully!' });
+    } catch(e: any) {
+      handleAuthError(e);
+    } finally {
+      setIsPending(false);
+    }
   };
 
-  const signInWithEmail = async ({ email, password }: AuthCredentials) => {
-    await handleAuthAction(
-      signInWithEmailAndPassword(auth, email, password),
-      'Signed in successfully!',
-      '/dashboard'
-    );
+  const signInWithEmail = ({ email, password }: AuthCredentials) => {
+    setIsPending(true);
+    setError(null);
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        // The onAuthStateChanged listener will handle the redirect.
+        toast({ title: 'Success', description: 'Signed in successfully!' });
+      })
+      .catch(handleAuthError)
+      .finally(() => {
+        setIsPending(false);
+      });
   };
 
-  const signOut = async () => {
-    await handleAuthAction(
-      firebaseSignOut(auth),
-      'Signed out successfully.',
-      '/'
-    );
+  const signOut = () => {
+    setIsPending(true);
+    firebaseSignOut(auth)
+      .then(() => {
+        toast({ title: 'Success', description: 'Signed out successfully.' });
+        router.push('/');
+      })
+      .catch(handleAuthError)
+      .finally(() => setIsPending(false));
   };
   
   // Protect routes by redirecting unauthenticated users
@@ -132,12 +137,9 @@ export const useAuth = () => {
       router.push('/dashboard');
     }
 
-    if (
-      !isUserLoading &&
-      !user &&
-      (window.location.pathname.startsWith('/dashboard') ||
-        window.location.pathname.startsWith('/admin'))
-    ) {
+    const isProtectedPage = window.location.pathname.startsWith('/dashboard') || window.location.pathname.startsWith('/admin');
+
+    if (!isUserLoading && !user && isProtectedPage) {
       router.push('/login');
     }
   }, [user, isUserLoading, router]);
