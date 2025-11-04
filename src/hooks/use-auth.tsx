@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -35,15 +35,21 @@ export interface UseAuthReturn {
 
 
 export const useAuth = (): UseAuthReturn => {
-  const { auth, firestore, user, isUserLoading } = useFirebase();
+  const { auth, firestore, user, isUserLoading: isUserAuthLoading } = useFirebase();
   const router = useRouter();
+  const pathname = usePathname();
   const { toast } = useToast();
 
   const [error, setError] = useState<Error | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdminLoading, setIsAdminLoading] = useState(true);
+
+  const isUserLoading = isUserAuthLoading || isAdminLoading;
+
 
   useEffect(() => {
+    setIsAdminLoading(true);
     if (user && firestore) {
       const checkAdminStatus = async () => {
         const adminDocRef = doc(firestore, `roles_admin/${user.uid}`);
@@ -51,12 +57,16 @@ export const useAuth = (): UseAuthReturn => {
           const adminDoc = await getDoc(adminDocRef);
           setIsAdmin(adminDoc.exists());
         } catch (e) {
+          console.error("Error checking admin status:", e)
           setIsAdmin(false);
+        } finally {
+          setIsAdminLoading(false);
         }
       };
       checkAdminStatus();
     } else {
       setIsAdmin(false);
+      setIsAdminLoading(false);
     }
   }, [user, firestore]);
 
@@ -142,28 +152,24 @@ export const useAuth = (): UseAuthReturn => {
   
   // Protect routes by redirecting unauthenticated users
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (isUserLoading) return; // Wait until loading is complete
 
     const isAuthPage =
-      window.location.pathname.startsWith('/login') ||
-      window.location.pathname.startsWith('/signup');
+      pathname.startsWith('/login') ||
+      pathname.startsWith('/signup');
 
-    if (!isUserLoading && user && isAuthPage) {
+    if (user && isAuthPage) {
       router.push('/dashboard');
     }
 
-    const isProtectedPage = window.location.pathname.startsWith('/dashboard') || window.location.pathname.startsWith('/admin');
+    const isProtectedPage = pathname.startsWith('/dashboard') || pathname.startsWith('/admin');
 
-    if (!isUserLoading && !user && isProtectedPage) {
+    if (!user && isProtectedPage) {
       router.push('/login');
     }
-  }, [user, isUserLoading, router]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
     
     // Redirect non-admins away from admin page
-    if (!isUserLoading && user && !isAdmin && window.location.pathname.startsWith('/admin')) {
+    if (user && !isAdmin && pathname.startsWith('/admin')) {
       toast({
         variant: 'destructive',
         title: 'Access Denied',
@@ -171,7 +177,8 @@ export const useAuth = (): UseAuthReturn => {
       });
       router.push('/dashboard');
     }
-  }, [user, isUserLoading, isAdmin, router, toast]);
+  }, [user, isUserLoading, isAdmin, router, toast, pathname]);
+
 
   return {
     user,
