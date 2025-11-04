@@ -97,13 +97,13 @@ export function SiteHeader() {
         <div className="flex flex-1 items-center justify-end space-x-2">
             <nav className="flex items-center space-x-1">
                 <Button variant="ghost" size="icon" asChild>
-                    <Link href="tel:+923001234567">
+                    <Link href="tel:+923006601081">
                         <Phone className="h-5 w-5 text-foreground/60 hover:text-accent transition-colors" />
                         <span className="sr-only">Call Us</span>
                     </Link>
                 </Button>
                 <Button variant="ghost" size="icon" asChild>
-                    <Link href="https://wa.me/923001234567" target="_blank">
+                    <Link href="https://wa.me/923006601081" target="_blank">
                         <MessageCircle className="h-5 w-5 text-foreground/60 hover:text-accent transition-colors" />
                         <span className="sr-only">WhatsApp</span>
                     </Link>
