@@ -1,4 +1,11 @@
-import Image from "next/image";
+import { Eye, Goal } from 'lucide-react';
+import Image from 'next/image';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 export default function AboutPage() {
   return (
@@ -32,13 +39,53 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="relative aspect-square rounded-lg overflow-hidden shadow-lg">
-             <Image
-                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcmludGluZyUyMHByZXNzfGVufDB8fHx8MTc2MjE3NjY0NHww&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Minal Enterprises team working in the print shop"
-                fill
-                className="object-cover"
-                data-ai-hint="printing press"
-              />
+            <Image
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcmludGluZyUyMHByZXNzfGVufDB8fHx8MTc2MjE3NjY0NHww&ixlib=rb-4.1.0&q=80&w=1080"
+              alt="Minal Enterprises team working in the print shop"
+              fill
+              className="object-cover"
+              data-ai-hint="printing press"
+            />
+          </div>
+        </div>
+
+        <div className="mt-24">
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="font-headline text-3xl md:text-4xl font-bold">
+              Our Vision & Mission
+            </h2>
+            <p className="text-muted-foreground mt-3">
+              The core principles that guide our work and drive our commitment to excellence.
+            </p>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card>
+              <CardHeader className="items-center text-center">
+                <div className="p-3 bg-primary/10 rounded-full">
+                  <Eye className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="font-headline text-2xl">Vision</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center text-muted-foreground">
+                <p>
+                  To be the best-in-class solution provider and trusted partner for branded trim and packaging while delivering quality and value to our clients.
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="items-center text-center">
+                 <div className="p-3 bg-primary/10 rounded-full">
+                  <Goal className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="font-headline text-2xl">Mission</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center text-muted-foreground">
+                <p>
+                  Our mission is to develop a win-win relationship with our clients by assisting them to achieve their goals through innovation, quality products, sustainable business practices and on-time delivery.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
