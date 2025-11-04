@@ -111,10 +111,10 @@ export function SiteFooter() {
                 </li>
                 <li>
                   <Link
-                    href="/faq"
+                    href="/policies"
                     className="text-muted-foreground hover:text-accent transition-colors"
                   >
-                    FAQ
+                    Policies
                   </Link>
                 </li>
                 <li>
