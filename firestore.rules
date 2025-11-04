@@ -10,11 +10,14 @@
  * - /users/{userId}/dielines/{dielineId}/ai_reports/{aiReportId}: AI reports for a user's dieline.
  * - /products/{productId}: Product information, publicly readable, admin-writeable.
  * - /invoices/{invoiceId}: Invoice information, access control managed via security rules.
+ * - /testimonials/{testimonialId}: User-submitted reviews.
  *
  * Key Security Decisions:
  * - Users can only access their own data (orders, dielines, AI reports).
  * - Only admins can create, update, or delete products.
  * - Invoices can only be read by admins and the associated user. Writes are restricted to admins.
+ * - Any authenticated user can create a testimonial.
+ * - Users can only update or delete their own testimonials.
  * - User listing is disallowed for privacy.
  *
  * Denormalization for Authorization:
@@ -59,6 +62,15 @@ service cloud.firestore {
      */
     function isExistingOwner(userId) {
         return isOwner(userId) && resource != null;
+    }
+    
+    /**
+     * @description Checks if the requesting user is the author of a resource.
+     * @param {object} docResource - The resource document being accessed.
+     * @return {boolean} True if the user is the author.
+     */
+    function isAuthor(docResource) {
+      return isSignedIn() && request.auth.uid == docResource.data.userId;
     }
 
     /**
@@ -164,6 +176,20 @@ service cloud.firestore {
         allow get: if isAdmin();
         allow list: if isAdmin();
         allow create, update, delete: if isAdmin();
+    }
+    
+    /**
+     * @description Rules for the testimonials collection.
+     * @path /testimonials/{testimonialId}
+     * @allow (get, list) Publicly readable.
+     * @allow (create) Any authenticated user can create a testimonial.
+     * @allow (update, delete) Only the user who wrote the testimonial can edit or delete it.
+     * @principle Community content with author-only modification.
+     */
+    match /testimonials/{testimonialId} {
+      allow get, list: if true;
+      allow create: if isSignedIn() && isAuthor(request.resource);
+      allow update, delete: if isAuthor(resource);
     }
   }
 }

@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/hooks/use-auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { TestimonialForm } from '@/components/dashboard/testimonial-form';
 
 export default function DashboardPage() {
   const { user, isUserLoading } = useAuth();
@@ -37,6 +38,16 @@ export default function DashboardPage() {
               <p><strong>Email:</strong> {user.email}</p>
               <p><strong>User ID:</strong> {user.uid}</p>
               {/* More account details will be added here */}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Leave a Review</CardTitle>
+              <CardDescription>Share your experience with Minal Enterprises.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <TestimonialForm />
             </CardContent>
           </Card>
 
