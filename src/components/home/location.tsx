@@ -1,7 +1,7 @@
 import { MapPin } from 'lucide-react';
 
 export function Location() {
-  const address = 'Print Vision printing press, C44G+GPM, Dhuddi Wala, Faisalabad, Pakistan';
+  const address = 'Minal Enterprises, C44G+GPM, Dhuddi Wala, Faisalabad, Pakistan';
   const embedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
   return (
