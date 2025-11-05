@@ -202,6 +202,47 @@
         "imageUrl"
       ]
     },
+    "CoreOffering": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CoreOffering",
+      "type": "object",
+      "description": "Represents a core offering category displayed on the homepage.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Core Offering entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the offering."
+        },
+        "description": {
+          "type": "string",
+          "description": "A short description of the offering."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the representative image.",
+          "format": "uri"
+        },
+        "link": {
+          "type": "string",
+          "description": "The URL this offering links to."
+        },
+        "order": {
+          "type": "number",
+          "description": "A number to determine the display order."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "imageUrl",
+        "link",
+        "order"
+      ]
+    },
     "Dieline": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Dieline",
@@ -542,6 +583,22 @@
             {
               "name": "portfolioId",
               "description": "The unique ID of the portfolio item."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/core_offerings/{offeringId}",
+        "definition": {
+          "entityName": "CoreOffering",
+          "schema": {
+            "$ref": "#/backend/entities/CoreOffering"
+          },
+          "description": "Stores the core offering categories for the homepage. Publicly readable, admin-writeable.",
+          "params": [
+            {
+              "name": "offeringId",
+              "description": "The unique ID of the core offering."
             }
           ]
         }

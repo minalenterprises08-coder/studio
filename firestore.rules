@@ -10,12 +10,13 @@
  * - /users/{userId}/dielines/{dielineId}/ai_reports/{aiReportId}: AI reports for a user's dieline.
  * - /products/{productId}: Product information, publicly readable, admin-writeable.
  * - /portfolio/{portfolioId}: Portfolio items, publicly readable, admin-writeable.
+ * - /core_offerings/{offeringId}: Homepage categories, publicly readable, admin-writeable.
  * - /invoices/{invoiceId}: Invoice information, access control managed via security rules.
  * - /testimonials/{testimonialId}: User-submitted reviews.
  *
  * Key Security Decisions:
  * - Users can only access their own data (orders, dielines, AI reports).
- * - Only admins can create, update, or delete products and portfolio items.
+ * - Only admins can create, update, or delete products, portfolio items, and core offerings.
  * - Invoices can only be read by admins and the associated user. Writes are restricted to admins.
  * - Any authenticated user can create a testimonial.
  * - Users can only update or delete their own testimonials.
@@ -178,6 +179,19 @@ service cloud.firestore {
       allow get, list: if true;
       allow create, update, delete: if isAdmin();
     }
+    
+    /**
+     * @description Rules for the core_offerings collection.
+     * @path /core_offerings/{offeringId}
+     * @allow (get, list) Publicly readable.
+     * @allow (create, update, delete) Only admins can modify core offerings.
+     * @deny (create, update, delete) Non-admins cannot modify core offerings.
+     * @principle Public read, admin-only write.
+     */
+    match /core_offerings/{offeringId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
 
      /**
       * @description Rules for the invoices collection.
@@ -208,3 +222,5 @@ service cloud.firestore {
     }
   }
 }
+
+    

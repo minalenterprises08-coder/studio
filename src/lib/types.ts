@@ -13,4 +13,15 @@ export type PortfolioItem = {
     category: string;
     imageUrl: string;
     tags: string[];
-}
+};
+
+export type CoreOffering = {
+    id: string;
+    title: string;
+    description: string;
+    imageUrl: string;
+    link: string;
+    order: number;
+};
+
+    
