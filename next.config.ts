@@ -23,16 +23,16 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'https',
+        protocol: 'https' as const,
         hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
       },
     ],
   },
+  // This is to allow cross-origin requests in the development environment.
+  allowedDevOrigins: ["*.cloudworkstations.dev"],
   experimental: {
-    // This is to allow cross-origin requests in the development environment.
-    allowedDevOrigins: ["*.cloudworkstations.dev"],
   }
 };
 
