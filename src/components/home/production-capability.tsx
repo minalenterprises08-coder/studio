@@ -1,5 +1,10 @@
+'use client';
 import { CheckCircle } from "lucide-react";
 import Image from "next/image";
+import { useDoc, useFirestore, useMemoFirebase } from '@/firebase';
+import type { SiteMedia } from '@/lib/types';
+import { doc } from 'firebase/firestore';
+import { Skeleton } from '../ui/skeleton';
 
 const capabilities = [
     { text: "A well-maintained, technology & automation-centric Production Plant managed by an experienced & skilled workforce." },
@@ -10,18 +15,29 @@ const capabilities = [
 ];
 
 export function ProductionCapability() {
+    const firestore = useFirestore();
+    const imageRef = useMemoFirebase(
+        () => (firestore ? doc(firestore, 'site_media', 'production-capability') : null),
+        [firestore]
+    );
+    const { data: image, isLoading } = useDoc<SiteMedia>(imageRef);
+
+
   return (
     <section className="py-16 sm:py-24 bg-background">
       <div className="container">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg order-last md:order-first">
-            <Image
-              src="https://images.unsplash.com/photo-1563784152347-9a09325a472a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwbWFjaGluZXJ5fGVufDB8fHx8MTc2MjE4MjgxN3ww&ixlib=rb-4.1.0&q=80&w=1080"
-              alt="Industrial machinery at Minal Enterprises production plant for offset printing"
-              fill
-              className="object-cover"
-              data-ai-hint="industrial machinery"
-            />
+            {isLoading && <Skeleton className="h-full w-full" />}
+            {image && (
+                <Image
+                src={image.imageUrl}
+                alt={image.description || "Industrial machinery for offset printing"}
+                fill
+                className="object-cover"
+                data-ai-hint="industrial machinery"
+                />
+            )}
           </div>
           <div>
             <h2 className="font-headline text-3xl md:text-4xl font-bold">
@@ -41,3 +57,5 @@ export function ProductionCapability() {
     </section>
   );
 }
+
+    

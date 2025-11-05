@@ -32,4 +32,12 @@ export type OwnerProfile = {
     bio2: string;
     imageUrl: string;
 };
+
+export type SiteMedia = {
+    id: string; // e.g. 'hero-background'
+    name: string; // e.g. 'Hero Background Image'
+    description: string; // e.g. 'The main background image for the homepage hero section.'
+    imageUrl: string;
+};
+    
     

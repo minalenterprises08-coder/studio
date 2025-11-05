@@ -1,22 +1,33 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { PaperFoldIcon } from '@/components/icons/paper-fold';
+import { useDoc, useFirestore, useMemoFirebase } from '@/firebase';
+import type { SiteMedia } from '@/lib/types';
+import { doc } from 'firebase/firestore';
+import { Skeleton } from '../ui/skeleton';
 
 export function Hero() {
-  const heroImage = PlaceHolderImages.find((img) => img.id === 'hero-background');
+  const firestore = useFirestore();
+  const heroImageRef = useMemoFirebase(
+    () => (firestore ? doc(firestore, 'site_media', 'hero-background') : null),
+    [firestore]
+  );
+  const { data: heroImage, isLoading } = useDoc<SiteMedia>(heroImageRef);
 
   return (
-    <section className="relative h-[60vh] md:h-[80vh] w-full flex items-center justify-center text-center text-white overflow-hidden">
+    <section className="relative h-[60vh] md:h-[80vh] w-full flex items-center justify-center text-center text-white overflow-hidden bg-secondary">
+      {isLoading && <Skeleton className="absolute inset-0" />}
       {heroImage && (
         <Image
           src={heroImage.imageUrl}
-          alt={heroImage.description}
+          alt={heroImage.description || 'Luxury packaging'}
           fill
           className="object-cover"
           priority
-          data-ai-hint={heroImage.imageHint}
+          data-ai-hint="luxury packaging"
         />
       )}
       <div className="absolute inset-0 bg-primary/60" />
@@ -46,3 +57,5 @@ export function Hero() {
     </section>
   );
 }
+
+    

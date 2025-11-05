@@ -1,9 +1,12 @@
 'use client';
 import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Download, ExternalLink } from 'lucide-react';
 import type { Metadata } from 'next';
+import { useDoc, useFirestore, useMemoFirebase } from '@/firebase';
+import type { SiteMedia } from '@/lib/types';
+import { doc } from 'firebase/firestore';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const metadata: Metadata = {
     title: 'FSC Certification',
@@ -15,9 +18,13 @@ export const metadata: Metadata = {
 
 
 export default function CertificationsPage() {
-  const certificateImage = PlaceHolderImages.find(
-    (img) => img.id === 'fsc-certificate'
+  const firestore = useFirestore();
+  const certificateImageRef = useMemoFirebase(
+    () => (firestore ? doc(firestore, 'site_media', 'fsc-certificate') : null),
+    [firestore]
   );
+  const { data: certificateImage, isLoading } = useDoc<SiteMedia>(certificateImageRef);
+
 
   return (
     <div className="bg-background">
@@ -44,6 +51,7 @@ export default function CertificationsPage() {
               </p>
             </div>
             <div className="p-6">
+              {isLoading && <Skeleton className="aspect-[1/1.414] w-full mx-auto" />}
               {certificateImage && (
                 <div className="relative aspect-[1/1.414] w-full mx-auto">
                   <Image
@@ -51,13 +59,13 @@ export default function CertificationsPage() {
                     alt={certificateImage.description}
                     fill
                     className="object-contain"
-                    data-ai-hint={certificateImage.imageHint}
+                    data-ai-hint="certificate document"
                   />
                 </div>
               )}
             </div>
             <div className="p-6 bg-secondary/30 flex flex-wrap gap-4 justify-center">
-              <Button asChild>
+              <Button asChild disabled={!certificateImage}>
                 <a
                   href={certificateImage?.imageUrl}
                   download="Minal-Enterprises-FSC-Certificate.jpg"
@@ -83,3 +91,5 @@ export default function CertificationsPage() {
     </div>
   );
 }
+
+    

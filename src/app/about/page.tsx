@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, Goal, User } from 'lucide-react';
+import { Eye, Goal } from 'lucide-react';
 import Image from 'next/image';
 import {
   Card,
@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
-import type { OwnerProfile } from '@/lib/types';
+import type { OwnerProfile, SiteMedia } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function OwnerSection() {
@@ -77,6 +77,13 @@ function OwnerSection() {
 
 
 export default function AboutPage() {
+    const firestore = useFirestore();
+    const imageRef = useMemoFirebase(
+        () => (firestore ? doc(firestore, 'site_media', 'about-page-team') : null),
+        [firestore]
+    );
+    const { data: image, isLoading } = useDoc<SiteMedia>(imageRef);
+
   return (
     <div className="bg-background">
       <div className="container py-16 md:py-24">
@@ -108,13 +115,16 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="relative aspect-square rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcmludGluZyUyMHByZXNzfGVufDB8fHx8MTc2MjE3NjY0NHww&ixlib=rb-4.1.0&q=80&w=1080"
-              alt="Minal Enterprises team working in the print shop"
-              fill
-              className="object-cover"
-              data-ai-hint="printing press"
-            />
+            {isLoading && <Skeleton className="h-full w-full" />}
+            {image && (
+                <Image
+                    src={image.imageUrl}
+                    alt={image.description || 'Minal Enterprises team at work'}
+                    fill
+                    className="object-cover"
+                    data-ai-hint="printing press"
+                />
+            )}
           </div>
         </div>
 
@@ -164,3 +174,5 @@ export default function AboutPage() {
     </div>
   );
 }
+
+    

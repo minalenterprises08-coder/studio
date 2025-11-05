@@ -5,6 +5,7 @@ import { ProductManager } from '@/components/admin/product-manager';
 import { PortfolioManager } from '@/components/admin/portfolio-manager';
 import { CoreOfferingsManager } from '@/components/admin/core-offerings-manager';
 import { OwnerProfileManager } from '@/components/admin/owner-profile-manager';
+import { SiteMediaManager } from '@/components/admin/site-media-manager';
 
 export default function AdminPage() {
   const { user, isUserLoading, isAdmin } = useAuth();
@@ -43,6 +44,7 @@ export default function AdminPage() {
       </div>
 
       <div className="grid gap-8">
+        <SiteMediaManager />
         <OwnerProfileManager />
         <CoreOfferingsManager />
         <ProductManager />
@@ -51,3 +53,5 @@ export default function AdminPage() {
     </div>
   );
 }
+
+    

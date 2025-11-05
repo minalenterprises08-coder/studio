@@ -12,12 +12,13 @@
  * - /portfolio/{portfolioId}: Portfolio items, publicly readable, admin-writeable.
  * - /core_offerings/{offeringId}: Homepage categories, publicly readable, admin-writeable.
  * - /site_content/{documentId}: Singleton documents for site content (e.g., owner profile). Publicly readable, admin-writeable.
+ * - /site_media/{mediaId}: Singleton documents for site-wide images (e.g., hero background). Publicly readable, admin-writeable.
  * - /invoices/{invoiceId}: Invoice information, access control managed via security rules.
  * - /testimonials/{testimonialId}: User-submitted reviews.
  *
  * Key Security Decisions:
  * - Users can only access their own data (orders, dielines, AI reports).
- * - Only admins can create, update, or delete products, portfolio items, core offerings, and site content.
+ * - Only admins can create, update, or delete products, portfolio items, core offerings, and site content/media.
  * - Invoices can only be read by admins and the associated user. Writes are restricted to admins.
  * - Any authenticated user can create a testimonial.
  * - Users can only update or delete their own testimonials.
@@ -206,6 +207,18 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    /**
+     * @description Rules for the site_media collection.
+     * @path /site_media/{mediaId}
+     * @allow (get, list) Publicly readable.
+     * @allow (create, update, delete) Only admins can modify site media.
+     * @principle Public read, admin-only write for singleton documents.
+     */
+    match /site_media/{mediaId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
      /**
       * @description Rules for the invoices collection.
       * @path /invoices/{invoiceId}
@@ -235,3 +248,5 @@ service cloud.firestore {
     }
   }
 }
+
+    
