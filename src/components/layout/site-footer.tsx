@@ -118,6 +118,14 @@ export function SiteFooter() {
                     About Us
                   </Link>
                 </li>
+                 <li>
+                  <Link
+                    href="/certifications"
+                    className="text-muted-foreground hover:text-accent transition-colors"
+                  >
+                    Certifications
+                  </Link>
+                </li>
                 <li>
                   <Link
                     href="/policies"
