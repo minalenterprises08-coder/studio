@@ -1,3 +1,5 @@
+'use client';
+
 import { Eye, Goal, User } from 'lucide-react';
 import Image from 'next/image';
 import {
@@ -6,15 +8,73 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import type { Metadata } from 'next';
+import { useDoc, useFirestore, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
+import type { OwnerProfile } from '@/lib/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export const metadata: Metadata = {
-  title: 'About Us',
-  description: 'Learn about Minal Enterprises, our history, our mission, and the values that drive our commitment to quality printing and packaging solutions since 2008.',
-  alternates: {
-    canonical: '/about',
-  },
-};
+function OwnerSection() {
+  const firestore = useFirestore();
+  const ownerProfileRef = useMemoFirebase(
+    () => (firestore ? doc(firestore, 'site_content', 'owner_profile') : null),
+    [firestore]
+  );
+  const { data: owner, isLoading } = useDoc<OwnerProfile>(ownerProfileRef);
+
+  if (isLoading) {
+    return (
+      <section className="mt-24" aria-labelledby="owner-heading">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="relative aspect-square rounded-lg overflow-hidden shadow-lg order-last md:order-first">
+            <Skeleton className="h-full w-full" />
+          </div>
+          <div className="order-first md:order-last">
+            <Skeleton className="h-10 w-3/4 mb-2" />
+            <Skeleton className="h-8 w-1/2 mb-2" />
+            <Skeleton className="h-6 w-1/3 mb-4" />
+            <Skeleton className="h-5 w-full mb-2" />
+            <Skeleton className="h-5 w-full mb-2" />
+            <Skeleton className="h-5 w-4/5" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!owner) {
+    return null; // Don't render the section if there's no data
+  }
+
+  return (
+    <section className="mt-24" aria-labelledby="owner-heading">
+      <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="relative aspect-square rounded-lg overflow-hidden shadow-lg order-last md:order-first">
+          <Image
+            src={owner.imageUrl}
+            alt={`Portrait of ${owner.name}`}
+            fill
+            className="object-cover"
+            data-ai-hint="man portrait"
+          />
+        </div>
+        <div className="order-first md:order-last">
+          <h2 id="owner-heading" className="font-headline text-3xl md:text-4xl font-bold">
+            Meet Our Founder
+          </h2>
+          <h3 className="font-headline text-2xl font-semibold text-primary mt-2">
+            {owner.name}
+          </h3>
+          <p className="text-lg font-medium text-muted-foreground">{owner.title}</p>
+          <div className="mt-4 space-y-4 text-muted-foreground">
+            <p>{owner.bio1}</p>
+            <p>{owner.bio2}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 export default function AboutPage() {
   return (
@@ -98,34 +158,7 @@ export default function AboutPage() {
           </div>
         </section>
         
-        <section className="mt-24" aria-labelledby="owner-heading">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="relative aspect-square rounded-lg overflow-hidden shadow-lg order-last md:order-first">
-                <Image
-                  src="https://storage.googleapis.com/stedi-studio-assets-public/shabbir-bhatti.png"
-                  alt="Portrait of Shabbir Ahmad Bhatti, Owner of Minal Enterprises"
-                  fill
-                  className="object-cover"
-                  data-ai-hint="man portrait"
-                />
-              </div>
-              <div className="order-first md:order-last">
-                <h2 id="owner-heading" className="font-headline text-3xl md:text-4xl font-bold">
-                  Meet Our Founder
-                </h2>
-                <h3 className="font-headline text-2xl font-semibold text-primary mt-2">Shabbir Ahmad Bhatti</h3>
-                <p className="text-lg font-medium text-muted-foreground">Owner & Founder</p>
-                <div className="mt-4 space-y-4 text-muted-foreground">
-                  <p>
-                    Under the leadership of Shabbir Ahmad Bhatti, Minal Enterprises has grown from a promising startup into a benchmark for quality in the packaging and printing industry. His vision has always been to forge strong, win-win relationships with every client, ensuring their goals are met through innovation and unwavering commitment to excellence.
-                  </p>
-                  <p>
-                    Shabbir's dedication to sustainable practices, on-time delivery, and superior quality continues to drive the company forward, making Minal Enterprises a trusted partner for businesses nationwide.
-                  </p>
-                </div>
-              </div>
-          </div>
-        </section>
+        <OwnerSection />
 
       </div>
     </div>

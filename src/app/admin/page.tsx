@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { ProductManager } from '@/components/admin/product-manager';
 import { PortfolioManager } from '@/components/admin/portfolio-manager';
 import { CoreOfferingsManager } from '@/components/admin/core-offerings-manager';
+import { OwnerProfileManager } from '@/components/admin/owner-profile-manager';
 
 export default function AdminPage() {
   const { user, isUserLoading, isAdmin } = useAuth();
@@ -42,6 +43,7 @@ export default function AdminPage() {
       </div>
 
       <div className="grid gap-8">
+        <OwnerProfileManager />
         <CoreOfferingsManager />
         <ProductManager />
         <PortfolioManager />
@@ -49,5 +51,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
-    

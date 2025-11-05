@@ -243,6 +243,47 @@
         "order"
       ]
     },
+    "OwnerProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "OwnerProfile",
+      "type": "object",
+      "description": "Represents the profile of the company owner for the About Us page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Should always be 'owner_profile'."
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the owner."
+        },
+        "title": {
+          "type": "string",
+          "description": "The owner's title (e.g., 'Owner & Founder')."
+        },
+        "bio1": {
+          "type": "string",
+          "description": "The first paragraph of the owner's biography."
+        },
+        "bio2": {
+          "type": "string",
+          "description": "The second paragraph of the owner's biography."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the owner's portrait image.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "title",
+        "bio1",
+        "bio2",
+        "imageUrl"
+      ]
+    },
     "Dieline": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Dieline",
@@ -604,6 +645,22 @@
         }
       },
       {
+        "path": "/site_content/{documentId}",
+        "definition": {
+          "entityName": "OwnerProfile",
+          "schema": {
+            "$ref": "#/backend/entities/OwnerProfile"
+          },
+          "description": "Stores singleton documents for site content, like the owner's profile. Publicly readable, admin-writeable.",
+          "params": [
+            {
+              "name": "documentId",
+              "description": "The unique ID of the content document (e.g., 'owner_profile')."
+            }
+          ]
+        }
+      },
+      {
         "path": "/invoices/{invoiceId}",
         "definition": {
           "entityName": "Invoice",
@@ -639,5 +696,3 @@
     "reasoning": "This Firestore structure is designed to support Minal Enterprises' online platform, focusing on a secure, scalable, and easily maintainable database.  The structure leverages path-based ownership for user-specific data and membership maps for collaborative data, aligning with the core design principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), and QAPs (Rules are not Filters).\n\n**Authorization Independence & QAPs (Crucially Important):**\n\n*   **Path-Based Ownership:** The structure uses hierarchical paths (e.g., `/users/{userId}/orders/{orderId}`) for entities that represent a `User 1:N Entity` relationship, such as Orders, Dielines and AI Reports. This approach ensures that security rules can efficiently validate ownership using the path itself, eliminating the need for costly and complex `get()` calls to parent documents.\n\n*   **Admin Roles:** The `/roles_admin/{uid}` collection is used to manage admin privileges. The existence of a document in this collection grants admin access, eliminating reliance on custom claims or document content for authorization.\n\n*   **Collection Group Queries (QAPs):**  The use of consistent naming and path-based ownership enables secure collection group queries. For example, fetching all orders for a specific user is done within the user's document tree, ensuring only authorized data is retrieved, this protects against unauthorized `list` operations.\n\n\n**Explanation of Paths:**\n\n*   `/roles_admin/{uid}`:  A document in this collection indicates that the user `{uid}` is an administrator. Security rules check for the existence of a document at this path to grant admin privileges.\n*   `/users/{userId}`: Stores customer profile data.  Customer documents are secured using path-based rules.\n*   `/users/{userId}/orders/{orderId}`: Represents orders placed by a specific customer.\n*   `/users/{userId}/dielines/{dielineId}`: Stores dielines uploaded by a specific customer.\n*   `/users/{userId}/dielines/{dielineId}/ai_reports/{aiReportId}`: Contains AI reports generated for a specific dieline of a user. Secured by path-based ownership.\n*   `/products/{productId}`: Stores product information.  Products are generally publicly accessible for viewing but may have restricted access for modifications, potentially managed through admin roles.\n*   `/portfolio/{portfolioId}`: Stores portfolio items. Publicly readable, write access restricted to admins.\n*   `/invoices/{invoiceId}`: Invoices are stored at the top level, associated with an order and protected with security rules\n*   `/testimonials/{testimonialId}`: Stores user-submitted reviews. Publicly readable, but create/update/delete operations are restricted to authenticated users by security rules.\n\nThis design ensures that security rules are simple, efficient, and easy to audit, promoting a secure and maintainable application."
   }
 }
-
-    

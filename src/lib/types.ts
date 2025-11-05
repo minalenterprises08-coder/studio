@@ -24,4 +24,12 @@ export type CoreOffering = {
     order: number;
 };
 
+export type OwnerProfile = {
+    id: 'owner_profile'; // Singleton document
+    name: string;
+    title: string;
+    bio1: string;
+    bio2: string;
+    imageUrl: string;
+};
     
