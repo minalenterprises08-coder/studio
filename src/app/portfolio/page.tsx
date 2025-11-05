@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useCollection, useMemoFirebase, useFirestore } from '@/firebase';
@@ -7,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 import { ItemCard } from '@/components/shared/item-card';
+import type { Metadata } from 'next';
 
 export default function PortfolioPage() {
   const firestore = useFirestore();
@@ -78,7 +80,8 @@ export default function PortfolioPage() {
 
            {!isLoading && !error && portfolioItems?.length === 0 && (
              <div className="text-center text-muted-foreground py-12">
-                <p>No portfolio items have been added yet.</p>
+               <p>Our portfolio is currently being updated.</p>
+               <p>Please check back soon to see our latest work!</p>
              </div>
            )}
         </div>

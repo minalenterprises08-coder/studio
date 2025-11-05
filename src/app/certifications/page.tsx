@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -25,9 +24,9 @@ export default function CertificationsPage() {
             </p>
           </div>
 
-          <div className="border rounded-lg shadow-lg overflow-hidden">
+          <section className="border rounded-lg shadow-lg overflow-hidden" aria-labelledby="fsc-certification-heading">
             <div className="p-6 bg-secondary/30">
-              <h2 className="text-2xl font-bold font-headline">
+              <h2 id="fsc-certification-heading" className="text-2xl font-bold font-headline">
                 FSC™ Chain-of-Custody
               </h2>
               <p className="text-muted-foreground mt-1">
@@ -68,7 +67,7 @@ export default function CertificationsPage() {
                 </a>
               </Button>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>

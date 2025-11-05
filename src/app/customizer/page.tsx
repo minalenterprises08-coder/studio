@@ -1,4 +1,13 @@
 import { CustomizerForm } from '@/components/customizer/customizer-form';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Instant Quote Customizer',
+  description: 'Get an instant price estimate for your custom packaging. Build your perfect box, choose materials, upload your dieline, and get a quote in seconds.',
+  alternates: {
+    canonical: '/customizer',
+  },
+};
 
 export default function CustomizerPage() {
   return (

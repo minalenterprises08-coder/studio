@@ -1,3 +1,12 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Social Policy',
+  description: 'Read the social policy of Minal Enterprises. We are committed to fair labor practices, a safe work environment, and upholding the rights of our employees.',
+  alternates: {
+    canonical: '/policies',
+  },
+};
 
 export default function SocialPolicyPage() {
   const policies = [
@@ -65,11 +74,11 @@ export default function SocialPolicyPage() {
 
           <div className="space-y-8">
             {policies.map((policy, index) => (
-              <div key={index} className="p-6 border rounded-lg shadow-sm">
+              <article key={index} className="p-6 border rounded-lg shadow-sm">
                 <p className="mb-4 text-xl text-right font-semibold" dir="rtl">{policy.urdu}</p>
                 <hr className="my-4"/>
                 <p className="text-lg text-muted-foreground">{policy.english}</p>
-              </div>
+              </article>
             ))}
           </div>
         </div>
@@ -77,4 +86,3 @@ export default function SocialPolicyPage() {
     </div>
   );
 }
-

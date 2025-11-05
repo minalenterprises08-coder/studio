@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useCollection, useMemoFirebase, useFirestore } from '@/firebase';
@@ -7,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 import { ItemCard } from '@/components/shared/item-card';
+import type { Metadata } from 'next';
 
 export default function ProductsPage() {
   const firestore = useFirestore();
@@ -58,24 +60,25 @@ export default function ProductsPage() {
               </AlertDescription>
             </Alert>
           )}
-          
+
           {!isLoading && !error && products && (
-             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {products.map((product) => (
                 <ItemCard
                   key={product.id}
                   imageUrl={product.imageUrl}
                   title={product.name}
-                  description={product.category}
+                  description={product.description}
                   price={product.price}
                 />
               ))}
             </div>
           )}
-
+          
           {!isLoading && !error && products?.length === 0 && (
              <div className="text-center text-muted-foreground py-12">
-                <p>No products have been added yet.</p>
+               <p>Our product catalog is currently being updated.</p>
+               <p>Please check back soon to see our offerings!</p>
              </div>
            )}
         </div>

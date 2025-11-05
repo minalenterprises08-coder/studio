@@ -1,4 +1,14 @@
 import { Mail, MapPin, Phone } from "lucide-react";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Contact Us',
+  description: 'Get in touch with Minal Enterprises. Find our phone numbers, email addresses, and office location in Faisalabad, Pakistan. We\'re ready to help with your printing and packaging needs.',
+  alternates: {
+    canonical: '/contact',
+  },
+};
+
 
 export default function ContactPage() {
   return (

@@ -18,10 +18,66 @@ const playfairDisplay = Playfair_Display({
   variable: '--font-playfair-display',
 });
 
+const title = 'Minal Enterprises — Custom Printed Boxes, Labels & Wedding Cards';
+const description =
+  'Minal Enterprises crafts premium custom boxes, labels, wedding invites and print solutions. Get instant quotes, dieline support, fast turnaround.';
+const url = 'https://minal.stedi.app'; // Replace with your actual domain
+
 export const metadata: Metadata = {
-  title: 'Minal Enterprises — Custom Printed Boxes, Labels & Wedding Cards',
-  description:
-    'Minal Enterprises crafts premium custom boxes, labels, wedding invites and print solutions. Get instant quotes, dieline support, fast turnaround.',
+  title: {
+    default: title,
+    template: '%s | Minal Enterprises',
+  },
+  description: description,
+  keywords: [
+    'custom boxes',
+    'printed packaging',
+    'labels',
+    'wedding cards',
+    'rigid boxes',
+    'Faisalabad printing',
+    'Minal Enterprises',
+  ],
+  authors: [{ name: 'Minal Enterprises' }],
+  creator: 'Minal Enterprises',
+  metadataBase: new URL(url),
+  openGraph: {
+    title: title,
+    description: description,
+    url: url,
+    siteName: 'Minal Enterprises',
+    images: [
+      {
+        url: '/og-image.png', // It's good practice to have a specific Open Graph image
+        width: 1200,
+        height: 630,
+        alt: 'Minal Enterprises custom packaging solutions',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: title,
+    description: description,
+    creator: '@MinalCenter', // Your twitter handle
+    images: ['/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: '/',
+  },
 };
 
 export default function RootLayout({

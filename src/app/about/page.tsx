@@ -6,6 +6,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About Us',
+  description: 'Learn about Minal Enterprises, our history, our mission, and the values that drive our commitment to quality printing and packaging solutions since 2008.',
+  alternates: {
+    canonical: '/about',
+  },
+};
 
 export default function AboutPage() {
   return (
@@ -49,9 +58,9 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="mt-24">
+        <section className="mt-24" aria-labelledby="mission-vision-heading">
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="font-headline text-3xl md:text-4xl font-bold">
+            <h2 id="mission-vision-heading" className="font-headline text-3xl md:text-4xl font-bold">
               Our Vision & Mission
             </h2>
             <p className="text-muted-foreground mt-3">
@@ -87,7 +96,7 @@ export default function AboutPage() {
               </CardContent>
             </Card>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
