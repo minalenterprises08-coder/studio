@@ -1,8 +1,15 @@
 'use client';
 import { useAuth } from '@/hooks/use-auth';
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { ProductManager } from '@/components/admin/product-manager';
 
 export default function AdminPage() {
   const { user, isUserLoading, isAdmin } = useAuth();
@@ -31,7 +38,7 @@ export default function AdminPage() {
 
   return (
     <div className="container py-12">
-      <div className='flex justify-between items-center mb-8'>
+      <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
           <p className="text-muted-foreground">
@@ -39,41 +46,29 @@ export default function AdminPage() {
           </p>
         </div>
       </div>
-      
+
       <div className="grid gap-8">
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between items-start">
-              <div>
-                <CardTitle>Manage Products</CardTitle>
-                <CardDescription>Add, edit, or delete products from your catalog.</CardDescription>
-              </div>
-              <Button>Add New Product</Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className='text-muted-foreground'>Product management UI will be here.</p>
-          </CardContent>
-        </Card>
+        <ProductManager />
 
         <Card>
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle>Manage Portfolio</CardTitle>
-                <CardDescription>Add, edit, or delete items from your portfolio showcase.</CardDescription>
+                <CardDescription>
+                  Add, edit, or delete items from your portfolio showcase.
+                </CardDescription>
               </div>
               <Button>Add New Item</Button>
             </div>
           </CardHeader>
           <CardContent>
-            <p className='text-muted-foreground'>Portfolio management UI will be here.</p>
+            <p className="text-muted-foreground">
+              Portfolio management UI will be here.
+            </p>
           </CardContent>
         </Card>
       </div>
-
     </div>
   );
 }
-
-    
