@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { useStorage } from '@/firebase/provider';
 import { useToast } from './use-toast';
+import type { User } from 'firebase/auth';
 
 export function useUploadFile() {
   const storage = useStorage();
@@ -11,7 +12,7 @@ export function useUploadFile() {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const uploadFile = async (file: File, path: string): Promise<string | null> => {
+  const uploadFile = async (file: File, path: string, user: User | null): Promise<string | null> => {
     if (!storage) {
       const err = new Error('Firebase Storage is not available.');
       setError(err);
@@ -23,12 +24,30 @@ export function useUploadFile() {
       return null;
     }
 
+    if (!user) {
+        const err = new Error('You must be logged in to upload files.');
+        setError(err);
+        toast({
+            variant: 'destructive',
+            title: 'Authentication Error',
+            description: err.message,
+        });
+        return null;
+    }
+
     setIsUploading(true);
     setError(null);
 
     try {
       const storageRef = ref(storage, path);
-      const snapshot = await uploadBytes(storageRef, file);
+      // Pass the user's auth token in the metadata
+      const metadata = {
+        customMetadata: {
+          'userId': user.uid
+        }
+      };
+
+      const snapshot = await uploadBytes(storageRef, file, metadata);
       const downloadURL = await getDownloadURL(snapshot.ref);
       
       toast({

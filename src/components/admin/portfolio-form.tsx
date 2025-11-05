@@ -22,6 +22,7 @@ import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import type { PortfolioItem } from '@/lib/types';
 import { Textarea } from '../ui/textarea';
 import { useUploadFile } from '@/hooks/use-upload-file';
+import { useAuth as useAppAuth } from '@/hooks/use-auth';
 
 const formSchema = z.object({
   title: z.string().min(2, { message: 'Title is required.' }),
@@ -38,6 +39,7 @@ interface PortfolioFormProps {
 
 export function PortfolioForm({ onFormSubmit }: PortfolioFormProps) {
   const { firestore } = useFirebase();
+  const { user } = useAppAuth();
   const { toast } = useToast();
   const [isPending, setIsPending] = useState(false);
   const { uploadFile, isUploading } = useUploadFile();
@@ -53,11 +55,11 @@ export function PortfolioForm({ onFormSubmit }: PortfolioFormProps) {
   });
 
   const onSubmit = async (values: PortfolioFormValues) => {
-    if (!firestore) {
+    if (!firestore || !user) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Firestore is not available.',
+        description: 'Firestore is not available or you are not logged in.',
       });
       return;
     }
@@ -65,7 +67,7 @@ export function PortfolioForm({ onFormSubmit }: PortfolioFormProps) {
     setIsPending(true);
 
     try {
-      const imageUrl = await uploadFile(values.image, `portfolio/${Date.now()}_${values.image.name}`);
+      const imageUrl = await uploadFile(values.image, `portfolio/${Date.now()}_${values.image.name}`, user);
       if (!imageUrl) {
         throw new Error('Image upload failed.');
       }

@@ -22,6 +22,7 @@ import { useState } from 'react';
 import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import type { Product } from '@/lib/types';
 import { useUploadFile } from '@/hooks/use-upload-file';
+import { useAuth as useAppAuth } from '@/hooks/use-auth';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Product name is required.' }),
@@ -39,6 +40,7 @@ interface ProductFormProps {
 
 export function ProductForm({ onFormSubmit }: ProductFormProps) {
   const { firestore } = useFirebase();
+  const { user } = useAppAuth();
   const { toast } = useToast();
   const [isPending, setIsPending] = useState(false);
   const { uploadFile, isUploading } = useUploadFile();
@@ -55,11 +57,11 @@ export function ProductForm({ onFormSubmit }: ProductFormProps) {
   });
 
   const onSubmit = async (values: ProductFormValues) => {
-    if (!firestore) {
+    if (!firestore || !user) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Firestore is not available.',
+        description: 'Firestore is not available or you are not logged in.',
       });
       return;
     }
@@ -67,7 +69,7 @@ export function ProductForm({ onFormSubmit }: ProductFormProps) {
     setIsPending(true);
 
     try {
-      const imageUrl = await uploadFile(values.image, `products/${Date.now()}_${values.image.name}`);
+      const imageUrl = await uploadFile(values.image, `products/${Date.now()}_${values.image.name}`, user);
       
       if (!imageUrl) {
         throw new Error('Image upload failed.');
