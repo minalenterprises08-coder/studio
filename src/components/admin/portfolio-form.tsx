@@ -21,11 +21,12 @@ import { useState } from 'react';
 import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import type { PortfolioItem } from '@/lib/types';
 import { Textarea } from '../ui/textarea';
+import { useUploadFile } from '@/hooks/use-upload-file';
 
 const formSchema = z.object({
   title: z.string().min(2, { message: 'Title is required.' }),
   category: z.string().min(2, { message: 'Category is required.' }),
-  imageUrl: z.string().url({ message: 'Please enter a valid URL.' }),
+  image: z.instanceof(File).refine(file => file.size > 0, 'Image is required.'),
   tags: z.string().optional(),
 });
 
@@ -39,18 +40,19 @@ export function PortfolioForm({ onFormSubmit }: PortfolioFormProps) {
   const { firestore } = useFirebase();
   const { toast } = useToast();
   const [isPending, setIsPending] = useState(false);
+  const { uploadFile, isUploading } = useUploadFile();
 
   const form = useForm<PortfolioFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
       category: '',
-      imageUrl: '',
+      image: undefined,
       tags: '',
     },
   });
 
-  const onSubmit = (values: PortfolioFormValues) => {
+  const onSubmit = async (values: PortfolioFormValues) => {
     if (!firestore) {
       toast({
         variant: 'destructive',
@@ -63,9 +65,16 @@ export function PortfolioForm({ onFormSubmit }: PortfolioFormProps) {
     setIsPending(true);
 
     try {
+      const imageUrl = await uploadFile(values.image, `portfolio/${Date.now()}_${values.image.name}`);
+      if (!imageUrl) {
+        throw new Error('Image upload failed.');
+      }
+
       const portfolioCol = collection(firestore, 'portfolio');
       const newPortfolioItem: Omit<PortfolioItem, 'id'> = {
-        ...values,
+        title: values.title,
+        category: values.category,
+        imageUrl: imageUrl,
         tags: values.tags ? values.tags.split(',').map(tag => tag.trim()) : [],
       };
 
@@ -122,12 +131,21 @@ export function PortfolioForm({ onFormSubmit }: PortfolioFormProps) {
         </div>
         <FormField
           control={form.control}
-          name="imageUrl"
-          render={({ field }) => (
+          name="image"
+          render={({ field: { onChange, value, ...rest } }) => (
             <FormItem>
-              <FormLabel>Image URL</FormLabel>
+              <FormLabel>Image</FormLabel>
               <FormControl>
-                <Input placeholder="https://example.com/image.jpg" {...field} />
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      onChange(e.target.files[0]);
+                    }
+                  }}
+                  {...rest}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -152,8 +170,8 @@ export function PortfolioForm({ onFormSubmit }: PortfolioFormProps) {
         />
         
         <div className="flex justify-end">
-          <Button type="submit" disabled={isPending}>
-            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button type="submit" disabled={isPending || isUploading}>
+            {(isPending || isUploading) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Add Portfolio Item
           </Button>
         </div>
