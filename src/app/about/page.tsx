@@ -1,4 +1,4 @@
-import { Eye, Goal } from 'lucide-react';
+import { Eye, Goal, User } from 'lucide-react';
 import Image from 'next/image';
 import {
   Card,
@@ -97,6 +97,36 @@ export default function AboutPage() {
             </Card>
           </div>
         </section>
+        
+        <section className="mt-24" aria-labelledby="owner-heading">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="relative aspect-square rounded-lg overflow-hidden shadow-lg order-last md:order-first">
+                <Image
+                  src="https://storage.googleapis.com/stedi-studio-assets-public/shabbir-bhatti.png"
+                  alt="Portrait of Shabbir Ahmad Bhatti, Owner of Minal Enterprises"
+                  fill
+                  className="object-cover"
+                  data-ai-hint="man portrait"
+                />
+              </div>
+              <div className="order-first md:order-last">
+                <h2 id="owner-heading" className="font-headline text-3xl md:text-4xl font-bold">
+                  Meet Our Founder
+                </h2>
+                <h3 className="font-headline text-2xl font-semibold text-primary mt-2">Shabbir Ahmad Bhatti</h3>
+                <p className="text-lg font-medium text-muted-foreground">Owner & Founder</p>
+                <div className="mt-4 space-y-4 text-muted-foreground">
+                  <p>
+                    Under the leadership of Shabbir Ahmad Bhatti, Minal Enterprises has grown from a promising startup into a benchmark for quality in the packaging and printing industry. His vision has always been to forge strong, win-win relationships with every client, ensuring their goals are met through innovation and unwavering commitment to excellence.
+                  </p>
+                  <p>
+                    Shabbir's dedication to sustainable practices, on-time delivery, and superior quality continues to drive the company forward, making Minal Enterprises a trusted partner for businesses nationwide.
+                  </p>
+                </div>
+              </div>
+          </div>
+        </section>
+
       </div>
     </div>
   );
