@@ -6,3 +6,11 @@ export type Product = {
     price: number;
     category: string;
 };
+
+export type PortfolioItem = {
+    id: string;
+    title: string;
+    category: string;
+    imageUrl: string;
+    tags: string[];
+}
