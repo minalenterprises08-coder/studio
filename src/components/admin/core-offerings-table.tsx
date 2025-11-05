@@ -1,7 +1,7 @@
 'use client';
 
 import { useCollection, useMemoFirebase, useFirestore } from '@/firebase';
-import { collection, query, orderBy } from 'firebase/firestore';
+import { collection, query, orderBy, doc } from 'firebase/firestore';
 import {
   Table,
   TableBody,
@@ -12,12 +12,27 @@ import {
 } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import type { CoreOffering } from '@/lib/types';
+import { Button } from '../ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '../ui/alert-dialog';
+import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { useToast } from '@/hooks/use-toast';
 
 export function CoreOfferingsTable() {
   const firestore = useFirestore();
+  const { toast } = useToast();
 
   const offeringsQuery = useMemoFirebase(() => {
     if (!firestore) return null;
@@ -29,6 +44,16 @@ export function CoreOfferingsTable() {
     isLoading,
     error,
   } = useCollection<CoreOffering>(offeringsQuery);
+
+  const handleDelete = (offeringId: string, offeringTitle: string) => {
+    if (!firestore) return;
+    const docRef = doc(firestore, 'core_offerings', offeringId);
+    deleteDocumentNonBlocking(docRef);
+    toast({
+      title: 'Offering Deleted',
+      description: `"${offeringTitle}" has been removed.`,
+    });
+  };
 
   if (isLoading) {
     return (
@@ -94,7 +119,31 @@ export function CoreOfferingsTable() {
                 {item.order}
               </TableCell>
               <TableCell className="text-right">
-                {/* Action buttons will go here */}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <Trash2 className="text-destructive" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the offering
+                        "{item.title}".
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleDelete(item.id, item.title)}
+                        className="bg-destructive hover:bg-destructive/90"
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </TableCell>
             </TableRow>
           ))}
@@ -103,5 +152,3 @@ export function CoreOfferingsTable() {
     </div>
   );
 }
-
-    

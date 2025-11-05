@@ -1,7 +1,7 @@
 'use client';
 
 import { useCollection, useMemoFirebase, useFirestore } from '@/firebase';
-import { collection, query, orderBy } from 'firebase/firestore';
+import { collection, query, orderBy, doc } from 'firebase/firestore';
 import {
   Table,
   TableBody,
@@ -13,12 +13,27 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import type { PortfolioItem } from '@/lib/types';
+import { Button } from '../ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '../ui/alert-dialog';
+import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { useToast } from '@/hooks/use-toast';
 
 export function PortfolioTable() {
   const firestore = useFirestore();
+  const { toast } = useToast();
 
   const portfolioQuery = useMemoFirebase(() => {
     if (!firestore) return null;
@@ -30,6 +45,16 @@ export function PortfolioTable() {
     isLoading,
     error,
   } = useCollection<PortfolioItem>(portfolioQuery);
+
+  const handleDelete = (itemId: string, itemTitle: string) => {
+    if (!firestore) return;
+    const docRef = doc(firestore, 'portfolio', itemId);
+    deleteDocumentNonBlocking(docRef);
+    toast({
+      title: 'Portfolio Item Deleted',
+      description: `"${itemTitle}" has been removed from your portfolio.`,
+    });
+  };
 
   if (isLoading) {
     return (
@@ -97,7 +122,31 @@ export function PortfolioTable() {
                 </div>
               </TableCell>
               <TableCell className="text-right">
-                {/* Action buttons will go here */}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <Trash2 className="text-destructive" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the item
+                        "{item.title}".
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleDelete(item.id, item.title)}
+                        className="bg-destructive hover:bg-destructive/90"
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </TableCell>
             </TableRow>
           ))}
