@@ -73,6 +73,17 @@ export default function SocialPolicyPage() {
 
 
           <div className="space-y-8">
+            <article className="p-6 border rounded-lg shadow-sm bg-primary/5">
+                <h3 className="font-headline text-2xl font-bold text-center mb-4">Policy for Forced Labour</h3>
+                <h4 className="font-headline text-xl font-bold text-center mb-4 text-muted-foreground rtl" dir="rtl">پالیسی برائے جبری مزدوری کی ممانعت</h4>
+                <p className="mb-4 text-xl text-right font-semibold" dir="rtl">
+                کمپنی کی انتظامیہ کسی بھی شخص سے اس کی رضامندی کے خلاف کام لینے کی سختی سے مذمت کرتی ہے اور کسی بھی معاوضے، پراپرٹی قرض یا ادھار کی ادائیگی کے لئے کسی بھی شخص کو کام پر مجبور کرنے کو غیر مہذب سمجھتی ہے۔ مزید برآں ہم کسی بھی ملازم کے اصلی، ذاتی کاغذات اپنی تحویل میں نہیں رکھتے۔ ملازمین کی آزادانہ نقل و حرکت پر یقین رکھتی ہے۔
+                </p>
+                <hr className="my-4"/>
+                <p className="text-lg text-muted-foreground">
+                The management of the Company strongly condemn forcing any individual to accept employment without one's wish/desire/need. We strongly condemn accepting any individual service in exchange to settle any liability incurred upon him i.e. any debt, benefit, property or loan to him/her with reference to company. Further we strongly condemn having cash personal warranty from any employee at the time of employment or even after that till he/she remains in our services. We do not keep any original personal identity papers of any individual with us for security purposes. Company believes in free movement of employees.
+                </p>
+              </article>
             {policies.map((policy, index) => (
               <article key={index} className="p-6 border rounded-lg shadow-sm">
                 <p className="mb-4 text-xl text-right font-semibold" dir="rtl">{policy.urdu}</p>
