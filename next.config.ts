@@ -45,6 +45,12 @@ const nextConfig: NextConfig = {
         hostname: 'postimg.cc',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'smartpress.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
