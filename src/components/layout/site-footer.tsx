@@ -35,7 +35,7 @@ export function SiteFooter() {
               Beautiful Boxes. Perfect Prints. Tailored for You.
             </p>
             <div className="flex space-x-4">
-              <SocialIcon href="#">
+              <SocialIcon href="https://www.facebook.com/MinalEnterprisespk/">
                 <svg
                   className="h-5 w-5"
                   fill="currentColor"
