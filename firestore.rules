@@ -210,12 +210,14 @@ service cloud.firestore {
     /**
      * @description Rules for the site_media collection.
      * @path /site_media/{mediaId}
-     * @allow (get, list) Publicly readable.
+     * @allow (get) Publicly readable.
+     * @allow (list) Only admins can list site media.
      * @allow (create, update, delete) Only admins can modify site media.
-     * @principle Public read, admin-only write for singleton documents.
+     * @principle Public read, admin-only write and list for singleton documents.
      */
     match /site_media/{mediaId} {
-      allow get, list: if true;
+      allow get: if true;
+      allow list: if isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
