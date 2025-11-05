@@ -10,6 +10,7 @@ import { Logo } from '@/components/icons/logo';
 import { cn } from '@/lib/utils';
 import { useUser } from '@/firebase';
 import { UserAvatarButton } from '@/components/auth/user-avatar-button';
+import { ThemeToggle } from '@/components/layout/theme-toggle';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -96,6 +97,7 @@ export function SiteHeader() {
         
         <div className="flex flex-1 items-center justify-end space-x-2">
             <nav className="flex items-center space-x-1">
+                <ThemeToggle />
                 <Button variant="ghost" size="icon" asChild>
                     <Link href="tel:+923006601081">
                         <Phone className="h-5 w-5 text-foreground/60 hover:text-accent transition-colors" />
