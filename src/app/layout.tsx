@@ -21,9 +21,10 @@ const playfairDisplay = Playfair_Display({
 const title = 'Minal Enterprises — Custom Printed Boxes, Labels & Wedding Cards';
 const description =
   'Minal Enterprises crafts premium custom boxes, labels, wedding invites and print solutions. Get instant quotes, dieline support, fast turnaround.';
-const url = 'https://minal.stedi.app'; // Replace with your actual domain
+const url = 'https://minal.stedi.app'; 
 
 export const metadata: Metadata = {
+  metadataBase: new URL(url),
   title: {
     default: title,
     template: '%s | Minal Enterprises',
@@ -38,9 +39,12 @@ export const metadata: Metadata = {
     'Faisalabad printing',
     'Minal Enterprises',
   ],
-  authors: [{ name: 'Minal Enterprises' }],
+  authors: [{ name: 'Minal Enterprises', url: url }],
   creator: 'Minal Enterprises',
-  metadataBase: new URL(url),
+  publisher: 'Minal Enterprises',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: title,
     description: description,
@@ -48,7 +52,7 @@ export const metadata: Metadata = {
     siteName: 'Minal Enterprises',
     images: [
       {
-        url: '/og-image.png', // It's good practice to have a specific Open Graph image
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Minal Enterprises custom packaging solutions',
@@ -61,7 +65,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: title,
     description: description,
-    creator: '@MinalCenter', // Your twitter handle
+    creator: '@MinalCenter', 
     images: ['/og-image.png'],
   },
   robots: {
@@ -75,9 +79,12 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  alternates: {
-    canonical: '/',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
   },
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({

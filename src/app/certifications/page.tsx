@@ -3,6 +3,16 @@ import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Download, ExternalLink } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'FSC Certification',
+    description: 'Minal Enterprises is certified by the Forest Stewardship Council (FSC™). View our certificate and verify our commitment to responsible sourcing and sustainable practices.',
+    alternates: {
+        canonical: '/certifications',
+    },
+};
+
 
 export default function CertificationsPage() {
   const certificateImage = PlaceHolderImages.find(

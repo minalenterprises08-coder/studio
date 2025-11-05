@@ -17,7 +17,7 @@ export function ProductionCapability() {
           <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg order-last md:order-first">
             <Image
               src="https://images.unsplash.com/photo-1563784152347-9a09325a472a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwbWFjaGluZXJ5fGVufDB8fHx8MTc2MjE4MjgxN3ww&ixlib=rb-4.1.0&q=80&w=1080"
-              alt="Industrial machinery at Minal Enterprises production plant"
+              alt="Industrial machinery at Minal Enterprises production plant for offset printing"
               fill
               className="object-cover"
               data-ai-hint="industrial machinery"

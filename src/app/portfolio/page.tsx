@@ -8,7 +8,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 import { ItemCard } from '@/components/shared/item-card';
-import type { Metadata } from 'next';
 
 export default function PortfolioPage() {
   const firestore = useFirestore();
