@@ -7,14 +7,20 @@ export function Logo(props: React.SVGProps<SVGSVGElement>) {
       {...props}
     >
       <g>
-        {/* Red A-shape */}
+        {/* M Shape - uses primary color */}
         <path
-          d="M40 85 L58 15 H72 L90 85 H75 L68 65 H52 L45 85 H40 Z M55 55 H65 L60 30 Z"
+          d="M10 85 V 15 H 25 L 50 55 L 75 15 H 90 V 85 H 75 V 35 L 55 75 H 45 L 25 35 V 85 H 10 Z"
           className="fill-primary"
         />
-        {/* Blue bars */}
-        <path d="M10 85 L28 15 H38 L20 85 H10 Z" fill="#2E67B2" />
-        <path d="M25 85 L43 15 H53 L35 85 H25 Z" fill="#4B9CE2" />
+        {/* E Shape overlay - uses accent color */}
+        <path
+          d="M20 55 H 70 V 70 H 20 V 55 Z"
+          fill="hsl(var(--accent))"
+        />
+        <path
+          d="M20 35 H 80 V 50 H 20 V 35 Z"
+          fill="hsl(var(--accent))"
+        />
       </g>
     </svg>
   );
